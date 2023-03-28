@@ -40,7 +40,69 @@ Post cleaning: 49184 observations (no features have been removed yet).
 
 Additional Features Dropped
 
+* Next I wanted to check what correlations exist in the data. Since there was a 99% correlation between ‘totalBal’ and ‘totalLim’, I removed the totalLim 
+feature as it doesn't provide 
+additional information.
+
 ![](Images/01_Heatmap.png)
+
+I wanted to see if ‘employment’ could be used as a predictor. There are over 18,000 unique professions. I looked at grouping professions but there were too many gray areas. In the end, it's too much to figure out so I dropped the feature. I still have (employment) length so I am able to capture some of a related feature still.
+
+I separated the features and target variable. I used chi-squared testing to identify the most significant features that are strongly associated with the target variable. It looks like term length might be useful for feature prediction.
+
+![](Images/02_Top%20Features:%20Chi2.png)
+
+I was curious about a possible relationship between loan status and Debt to Income Ratio. Looks like it is a slightly higher trend for those who default.
+
+![](Images/03_Defaulter%20Box%20Plot.png)
+
+I wanted to see if there was a difference in defaults based on home ownership. To do this, I created a new dataframe showing the percentage of defaults for each category of home status. I was surprised to see that those who own their homes outright were in the middle. I expected them to default the least.
+
+![](Images/04_Homeowners.png)
+
+I wanted to try the same experiment with the reason for the loan. I speculated that debt consolidation would be the feature with the highest percentage of defaults. Turns out, Small Business loans were highest. Debt Consolidation was the most common reason for loans, followed by Credit Cards. These are pretty similar reasons and it could be argued that joining them would make sense. If joined, together they would account for the highest amount of defaults. I created a separate drataframe and calculated the percentage of defaults per loan reason.
+
+![](Images/05_Small%20Businesses.png)
+
+I separated Current & Default and created samples of 1000 from each for easier visualization. I did a quick histogram of the separated dataframes to compare to each other. Most of the distributions have very distinct right tails showing outliers in the data. 
+
+I tried using describe on each of the newly created dataframes and then subtracted them from each other to see if there were any large differences. Because the data is scaled very differently, it was hard to easily see what differences might be important. And beyond that, because the data is not normally distributed, these metrics are not as helpful.
+
+I looked at why people were getting a loan vs. their income. I used loan status to further separate the data on the plot.
+
+![](Images/06_Reason%20for%20Loan%20versus%20Income.png)
+
+I wanted to sort the defaults by state to see if any states in particular had a higher percentage of defaults. I decided to regroup the states by quartiles. This can be helpful during preprocessing when categorical features are encoded. 
+
+![](Images/08_State%20Defaults.png)
+
+A quick glance at the states with high defaults made me curious what the correlation was with math scores in that state. I was able to find a dataset with math scores by state so I cleaned it and merged it with the State Summary dataframe. Not particularly useful but it is interesting nonetheless.
+
+![](Images/09_Math%20Scores.png)
+
+I tried another scatter plot to look for any patterns in the data. I plotted the Total Number of Credit Lines against the Debt to Income Ratio.
+
+![](Images/10_Total%20Credit%20Lines%20vs%20Debt%20to%20Income%20Ratio.png)
+
+I used a histogram to plot the number of records across the debtIncRat (debt to income ratio). By splitting Default & Current, I'm able to see a trend of where current loans outnumber defaults at the lower debtIncRat and then defaults outnumber currents at the high debIncRat. It's hard to see so I tried to mirror the plot.
+
+![](Images/11_Stacked%20Bars.png)
+![](Images/12_Butterfly.png)
+
+Pre-processing:
+
+Link to GitHub Jupyter Notebook: Data Preprocessing & Modeling
+
+Before encoding, I mapped the length feature to preserve the order of the data. I split the data into a target variable and predictive features and used dummy encoding to transform categorical features to numeric. Next I split the data into a training set and a testing set and scaled the data (using Standard Scaler).
+
+Modeling:
+
+I decided to try out four algorithms that handle classification problems well: Logistic Regression, Random Forest Classifier, Gradient Boosting Classifier and Support Vector Machines (SVM). I looked for the best Recall Score because recall measures the proportion of actual defaults that were correctly identified by the model. In the context of loan default prediction, it is important to identify as many defaults as possible to minimize the risk of losses for the lender. Therefore, optimizing for recall can help ensure that the model is effective at identifying defaulters. Linear Regression and SVM were close to each other but Linear Regression had a better recall score.
+
+
+
+
+
 
 
 ![](Images/)
