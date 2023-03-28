@@ -89,20 +89,56 @@ I used a histogram to plot the number of records across the debtIncRat (debt to 
 ![](Images/11_Stacked%20Bars.png)
 ![](Images/12_Butterfly.png)
 
-Pre-processing:
-
-Link to GitHub Jupyter Notebook: Data Preprocessing & Modeling
+#### Pre-processing:
 
 Before encoding, I mapped the length feature to preserve the order of the data. I split the data into a target variable and predictive features and used dummy encoding to transform categorical features to numeric. Next I split the data into a training set and a testing set and scaled the data (using Standard Scaler).
 
-Modeling:
+#### Modeling:
 
 I decided to try out four algorithms that handle classification problems well: Logistic Regression, Random Forest Classifier, Gradient Boosting Classifier and Support Vector Machines (SVM). I looked for the best Recall Score because recall measures the proportion of actual defaults that were correctly identified by the model. In the context of loan default prediction, it is important to identify as many defaults as possible to minimize the risk of losses for the lender. Therefore, optimizing for recall can help ensure that the model is effective at identifying defaulters. Linear Regression and SVM were close to each other but Linear Regression had a better recall score.
 
+![](Images/Table%20Images/03_Model_Performance_Testing.png)
+![](Images/13_Recall%20Scores%20by%20Model.png)
 
+The Linear Regression model also had a significantly faster run time. 
 
+![](Images/14_Total%20Time%20by%20Model.png)
 
+I wanted to see if I could get better results from my model by addressing the class imbalance with different sampling techniques so I tried synthetic oversampling, random oversampling and random undersampling. I then tested the results again using Logistic Regression.
 
+![](Images/Table%20Images/04_LR_Sampling.png)
 
+I moved forward with SMOTE synthetic oversampling to tune my hyperparameters. It had the highest scores in all metrics except accuracy which I am less concerned about.
 
-![](Images/)
+![](Images/Table%20Images/05_LR_Sampling_Tuning.png)
+
+#### Summary:
+
+I wanted to see which features made the biggest impact on the model so I plotted the coefficients. Loan term (60 months) being the highest categorical features wasn’t a surprise as it scored the highest previously when I performed a chi-squared test. I was a bit surprised to see State - Quantile 1 as State had a low chi-squared test score; however, I think the splitting the states into quartiles made a big difference. 
+
+![](Images/15_Feature%20Importance.png)
+
+I narrowed down to the top 8 to see which features the model was utilizing the most to make predictions. 
+
+![](Images/16_Top%20Coefficients.png)
+
+#### Conclusion:
+
+Ultimately the results were below expectations. The model makes far too many mistakes with both false positives and false negatives. 
+
+![](Images/Table%20Images/06_Final_Model_Performance_Summary.png)
+
+A false negative (Type II error) means the model incorrectly classified a loan as paid on time when it should have been classified as a default. They can have significant consequences in the case of loan default prediction because they can lead to the approval of credit to individuals that eventually default on their loans. This can result in financial losses for the lender, damage to credit scores for the borrowers, and potential legal consequences.
+
+In the case of loan default prediction, a false positive means the model incorrectly classified a loan as a default when it should have been classified as paid on time. False positives (Type I errors) can lead to the denial of credit to individuals that would have otherwise paid their loans on time. This can result in lost opportunities for both the borrower and the lender.
+
+Therefore, it is important to minimize false positives while building a loan default prediction model to avoid rejecting good loans or customers who are unlikely to default. To achieve a successful model that could be implemented, additional features are needed. Below is a sample of what features are not included that could be useful. 
+
+* Additional Borrower information: 
+Credit score, Age, Education level, Marital status, Number of dependents, Geography (city or area code instead of just state)
+* Additional Loan characteristics:
+Interest rate type (fixed or variable), Type of loan (secured or unsecured), Loan origination date, payment frequency
+* Economic factors:
+Interest rates, Inflation rate, Unemployment rate, GDP growth rate
+
+![](Images/17_Confusion%20Matrix.png)
