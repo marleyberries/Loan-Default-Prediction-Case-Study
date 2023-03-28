@@ -1,7 +1,7 @@
 # Loan Default Prediction
 ## Project Report
 
-![](Images/Desk.jpg)
+![](Images/Desk.jpg "Generic Image of Male Working Diligently At Laptop")
 
 ### Project Overview: 
 
