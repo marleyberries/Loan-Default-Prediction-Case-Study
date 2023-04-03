@@ -5,7 +5,7 @@
 
 ### Project Overview: 
 
-A bank has noticed that their loan defaults for personal loans is very high - nearly 15%. They want to use the data they have been collecting on the loans to try to predict which factors or features are most likely to indicate a high probability of loan default so they can deny those loans. 
+A bank has noticed that their loan defaults for personal loans is very high - nearly 15%. They want to use the data they have been collecting on the loans to try to predict which factors or features are most likely to indicate a high probability of loan default so they can deny those loans. [Data Source: University of Wisconsin](https://datascienceuwl.github.io/Project2018/TheData.html)
 
 #### Data Wrangling:
 
