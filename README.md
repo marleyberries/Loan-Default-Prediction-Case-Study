@@ -1,7 +1,7 @@
 # Loan Default Prediction
 ## Project Report
 
-![](Images/Desk.jpg "Generic Image of Male Working Diligently At Laptop")
+![](Notebooks/Images/Desk.jpg "Generic Image of Male Working Diligently At Laptop")
 
 ### Project Overview: 
 
@@ -14,7 +14,7 @@ I started the project by familiarizing myself with the data. The original datase
 Addressing Missing Values: <br>
 * 1 loan had nulls for all features and was deleted. 
 
-<img src="Images/Table%20Images/01_Missing_Value_Summary.png" width="40%" title="Missing Value Summary">
+<img src="Notebooks/Images/Table%20Images/01_Missing_Value_Summary.png" width="40%" title="Missing Value Summary">
 
 * For entries that were missing the value for length, but had a value for employment: I filled in length with the mean of '6 years'. <br>
 * For entries with a missing value for employment, but a value for length: I filled in with '0 years'. <br>
@@ -30,7 +30,7 @@ Looking at the data & checking outliers. <br>
 Creating “Default” & “Current Categories” for “Status” Feature
 * I wanted to pare down the different status categories. Next I wanted to look at the different status categories. For the purpose of looking for defaults, I grouped the 7 categories into 3: Current, Late & Default. Since the goal is to predict either Default or Current, I opted to remove all observations in the 'Late' status. Fortunately, this was only 1.6% of the total remaining observations.
 
-<img src="Images/Table%20Images/02_Loan_Status_Summary.png" width="30%" title="Loan Status Summary">
+<img src="Notebooks/Images/Table%20Images/02_Loan_Status_Summary.png" width="30%" title="Loan Status Summary">
 
 Post cleaning: 49184 observations (no features have been removed yet).
 
@@ -44,26 +44,26 @@ Additional Features Dropped
 feature as it doesn't provide 
 additional information.
 
-<img src="Images/01_Heatmap.png" width="80%" title="Heatmap">
+<img src="Notebooks/Images/01_Heatmap.png" width="80%" title="Heatmap">
 
 I wanted to see if ‘employment’ could be used as a predictor. There are over 18,000 unique professions. I looked at grouping professions but there were too many gray areas. In the end, it's too much to figure out so I dropped the feature. I still have (employment) length so I am able to capture some of a related feature still.
 
 I separated the features and target variable. I used chi-squared testing to identify the most significant features that are strongly associated with the target variable. It looks like term length might be useful for feature prediction.
 
-<img src="Images/02_Top%20Features:%20Chi2.png" width="60%" title="Chi Squared Test">
+<img src="Notebooks/Images/02_Top%20Features:%20Chi2.png" width="60%" title="Chi Squared Test">
 
 
 I was curious about a possible relationship between loan status and Debt to Income Ratio. Looks like it is a slightly higher trend for those who default.
 
-<img src="Images/03_Defaulter%20Box%20Plot.png" width="30%" title="Box Plot">
+<img src="Notebooks/Images/03_Defaulter%20Box%20Plot.png" width="30%" title="Box Plot">
 
 I wanted to see if there was a difference in defaults based on home ownership. To do this, I created a new dataframe showing the percentage of defaults for each category of home status. I was surprised to see that those who own their homes outright were in the middle. I expected them to default the least.
 
-<img src="Images/04_Homeowners.png" width="60%" title="Homeowners">
+<img src="Notebooks/Images/04_Homeowners.png" width="60%" title="Homeowners">
 
 I wanted to try the same experiment with the reason for the loan. I speculated that debt consolidation would be the feature with the highest percentage of defaults. Turns out, Small Business loans were highest. Debt Consolidation was the most common reason for loans, followed by Credit Cards. These are pretty similar reasons and it could be argued that joining them would make sense. If joined, together they would account for the highest amount of defaults. I created a separate drataframe and calculated the percentage of defaults per loan reason.
 
-<img src="Images/05_Small%20Businesses.png" width="60%" title="Small Businesses">
+<img src="Notebooks/Images/05_Small%20Businesses.png" width="60%" title="Small Businesses">
 
 I separated Current & Default and created samples of 1000 from each for easier visualization. I did a quick histogram of the separated dataframes to compare to each other. Most of the distributions have very distinct right tails showing outliers in the data. 
 
@@ -71,25 +71,25 @@ I tried using describe on each of the newly created dataframes and then subtract
 
 I looked at why people were getting a loan vs. their income. I used loan status to further separate the data on the plot.
 
-![](Images/06_Reason%20for%20Loan%20versus%20Income.png)
+![](Notebooks/Images/06_Reason%20for%20Loan%20versus%20Income.png)
 
 I wanted to sort the defaults by state to see if any states in particular had a higher percentage of defaults. I decided to regroup the states by quartiles. This can be helpful during preprocessing when categorical features are encoded. 
 
-![](Images/08_State%20Defaults.png)
+![](Notebooks/Images/08_State%20Defaults.png)
 
 A quick glance at the states with high defaults made me curious what the correlation was with math scores in that state. I was able to find a dataset with math scores by state so I cleaned it and merged it with the State Summary dataframe. Not particularly useful but it is interesting nonetheless. [Source for Education Dataset](https://www.kaggle.com/datasets/noriuk/us-education-datasets-unification-project?select=states_all_extended.csv)
 
-<img src="Images/09_Math%20Scores.png" width="60%" title="Math Scores">
+<img src="Notebooks/Images/09_Math%20Scores.png" width="60%" title="Math Scores">
 
 I tried another scatter plot to look for any patterns in the data. I plotted the Total Number of Credit Lines against the Debt to Income Ratio.
 
-![](Images/10_Total%20Credit%20Lines%20vs%20Debt%20to%20Income%20Ratio.png)
+![](Notebooks/Images/10_Total%20Credit%20Lines%20vs%20Debt%20to%20Income%20Ratio.png)
 
 I used a histogram to plot the number of records across the debtIncRat (debt to income ratio). By splitting Default & Current, I'm able to see a trend of where current loans outnumber defaults at the lower debtIncRat and then defaults outnumber currents at the high debIncRat. It's hard to see so I tried to mirror the plot.
 
-<img src="Images/11_Stacked%20Bars.png" width="40%" title="Stacked Bars">
+<img src="Notebooks/Images/11_Stacked%20Bars.png" width="40%" title="Stacked Bars">
 
-<img src="Images/12_Butterfly.png" width="40%" title="Butterfly">
+<img src="Notebooks/Images/12_Butterfly.png" width="40%" title="Butterfly">
 
 #### Pre-processing:
 
@@ -99,37 +99,37 @@ Before encoding, I mapped the length feature to preserve the order of the data. 
 
 I decided to try out four algorithms that handle classification problems well: Logistic Regression, Random Forest Classifier, Gradient Boosting Classifier and Support Vector Machines (SVM). I looked for the best Recall Score because recall measures the proportion of actual defaults that were correctly identified by the model. In the context of loan default prediction, it is important to identify as many defaults as possible to minimize the risk of losses for the lender. Therefore, optimizing for recall can help ensure that the model is effective at identifying defaulters. Linear Regression and SVM were close to each other but Linear Regression had a better recall score.
 
-<img src="Images/Table%20Images/03_Model_Performance_Testing.png" width="40%" title="Model Performance Testing">
+<img src="Notebooks/Images/Table%20Images/03_Model_Performance_Testing.png" width="40%" title="Model Performance Testing">
 
-<img src="Images/Table%20Images/03_Model_Performance_Testing.png" width="40%" title="Recall Scores by Model">
+<img src="Notebooks/Images/Table%20Images/03_Model_Performance_Testing.png" width="40%" title="Recall Scores by Model">
 
 The Linear Regression model also had a significantly faster run time. 
 
-<img src="Images/14_Total%20Time%20by%20Model.png" width="40%" title="Total Time by Model">
+<img src="Notebooks/Images/14_Total%20Time%20by%20Model.png" width="40%" title="Total Time by Model">
 
 I wanted to see if I could get better results from my model by addressing the class imbalance with different sampling techniques so I tried synthetic oversampling, random oversampling and random undersampling. I then tested the results again using Logistic Regression.
 
-<img src="Images/Table%20Images/04_LR_Sampling.png" width="40%" title="LR + Sampling">
+<img src="Notebooks/Images/Table%20Images/04_LR_Sampling.png" width="40%" title="LR + Sampling">
 
 I moved forward with SMOTE synthetic oversampling to tune my hyperparameters. It had the highest scores in all metrics except accuracy which I am less concerned about.
 
-<img src="Images/Table%20Images/05_LR_Sampling_Tuning.png" width="40%" title="LR + Sampling + Tuning">
+<img src="Notebooks/Images/Table%20Images/05_LR_Sampling_Tuning.png" width="40%" title="LR + Sampling + Tuning">
 
 #### Summary:
 
 I wanted to see which features made the biggest impact on the model so I plotted the coefficients. Loan term (60 months) being the highest categorical features wasn’t a surprise as it scored the highest previously when I performed a chi-squared test. I was a bit surprised to see State - Quantile 1 as State had a low chi-squared test score; however, I think the splitting the states into quartiles made a big difference. 
 
-![](Images/15_Feature%20Importance.png)
+![](Notebooks/Images/15_Feature%20Importance.png)
 
 I narrowed down to the top 8 to see which features the model was utilizing the most to make predictions. 
 
-<img src="Images/16_Top%20Coefficients.png" width="60%" title="Top Coefficients">
+<img src="Notebooks/Images/16_Top%20Coefficients.png" width="60%" title="Top Coefficients">
 
 #### Conclusion:
 
 Ultimately the results were below expectations. The model makes far too many mistakes with both false positives and false negatives. 
 
-<img src="Images/Table%20Images/06_Final_Model_Performance_Summary.png" width="40%" title="Performance Summary">
+<img src="Notebooks/Images/Table%20Images/06_Final_Model_Performance_Summary.png" width="40%" title="Performance Summary">
 
 A false negative (Type II error) means the model incorrectly classified a loan as paid on time when it should have been classified as a default. They can have significant consequences in the case of loan default prediction because they can lead to the approval of credit to individuals that eventually default on their loans. This can result in financial losses for the lender, damage to credit scores for the borrowers, and potential legal consequences.
 
@@ -144,4 +144,4 @@ Interest rate type (fixed or variable), Type of loan (secured or unsecured), Loa
 * Economic factors:
 Interest rates, Inflation rate, Unemployment rate, GDP growth rate
 
-<img src="Images/17_Confusion%20Matrix.png" width="40%" title="Confusion Matrix">
+<img src="Notebooks/Images/17_Confusion%20Matrix.png" width="40%" title="Confusion Matrix">
